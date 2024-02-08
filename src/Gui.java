@@ -1,4 +1,5 @@
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -19,7 +20,7 @@ public class Gui implements ActionListener {
     JScrollPane scrollPane;
     // top menubar
     JMenuBar menuBar;
-    JMenu menuFile, menuEdit, menuFormat, menuColor;
+    JMenu menuFile, menuEdit, menuFormat, menuColor, menuAbout;
 
     // File menu items ----
     JMenuItem iNew, iOpen, iSave, iSaveAs, iExit;
@@ -35,12 +36,16 @@ public class Gui implements ActionListener {
     // Edit menu items ----
     JMenuItem iUndo, iRedo;
 
+    // About menu items
+    JMenuItem iAbout;
+
     boolean wordWrapOn = false;
 
     FunctionsFile file = new FunctionsFile(this);
     FunctionFormat format = new FunctionFormat(this);
     FunctionColor color = new FunctionColor(this);
     FunctionEdit edit = new FunctionEdit(this);
+    // FunctionAbout about = new FunctionAbout(this);
 
     // create undo and redo manager
     UndoManager um = new UndoManager();
@@ -56,6 +61,7 @@ public class Gui implements ActionListener {
         createFormatMenu();
         createColorMenu();
         createEditMenu();
+        createAboutMenu();
 
         // set default font & size
         format.selectedFont = "Arial";
@@ -67,9 +73,12 @@ public class Gui implements ActionListener {
 
     // define the createWindow method
     public void createWindow() {
-        window = new JFrame("Notepad Clone");
+        window = new JFrame("J-Notepad");
         window.setSize(800, 600);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ImageIcon imageIcon = new ImageIcon("src\\Icons\\notepad_icon.png");
+        window.setIconImage(imageIcon.getImage());
+
     }
 
     // define the text area method which will help us to write our text
@@ -111,6 +120,10 @@ public class Gui implements ActionListener {
         // Color
         menuColor = new JMenu("Color");
         menuBar.add(menuColor);
+
+        // About
+        menuAbout = new JMenu("About");
+        menuBar.add(menuAbout);
     }
 
     // menu items method
@@ -146,7 +159,7 @@ public class Gui implements ActionListener {
         menuFile.add(iExit);
     }
 
-    // create a method to create Format menu
+    // create a method to implement Format menu
     public void createFormatMenu() {
         iWrap = new JMenuItem("Word Wrap: Off");
         iWrap.addActionListener(this);
@@ -211,7 +224,7 @@ public class Gui implements ActionListener {
 
     }
 
-    // create a method to create Color menu
+    // create a method to implement Color menu
     public void createColorMenu() {
         iColor1 = new JMenuItem("White");
         iColor1.addActionListener(this);
@@ -265,7 +278,7 @@ public class Gui implements ActionListener {
 
     }
 
-    // create a method to create Edit menu
+    // create a method to implement Edit menu
     public void createEditMenu() {
         iUndo = new JMenuItem("Undo");
         iUndo.addActionListener(this);
@@ -276,6 +289,15 @@ public class Gui implements ActionListener {
         iRedo.addActionListener(this);
         iRedo.setActionCommand("Redo");
         menuEdit.add(iRedo);
+    }
+
+    // create a method to implement About menu
+    public void createAboutMenu() {
+        // About menu
+        iAbout = new JMenuItem("About J-Notepad");
+        iAbout.addActionListener(this);
+        iAbout.setActionCommand("About J-Notepad");
+        menuAbout.add(iAbout);
     }
 
     @Override
@@ -365,6 +387,9 @@ public class Gui implements ActionListener {
                 break;
             case "Redo":
                 edit.redo();
+                break;
+            case "About J-Notepad":
+                new FunctionAbout().setVisible(true);
                 break;
         }
     }
